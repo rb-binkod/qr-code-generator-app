@@ -1,0 +1,19 @@
+<div class="container">
+    <h2>QR Code Generator</h2>
+
+    <button (click)="toggleForm()">
+        {{ showForm ? 'Hide Form' : 'Generate QR' }}
+    </button>
+
+    <app-qr-form *ngIf="showForm" (qrGenerated)="onQrGenerated($event)"></app-qr-form>
+
+    <h3>Generated QR Codes</h3>
+    <ul *ngIf="qrList.length > 0">
+        <li *ngFor="let item of qrList">
+            <span><strong>{{ item.type.toUpperCase() }}:</strong> {{ item.value }}</span>
+            <a [routerLink]="['/preview', item.id]" title="Preview QR">🔍</a>
+        </li>
+    </ul>
+
+    <p *ngIf="qrList.length === 0">No QR codes generated yet.</p>
+</div>

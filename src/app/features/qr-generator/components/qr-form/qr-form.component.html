@@ -1,0 +1,13 @@
+<form (ngSubmit)="onSubmit()">
+  <label for="type">QR Type:</label>
+  <select id="type" [(ngModel)]="type" name="type">
+    <option value="text">Text</option>
+    <option value="url">URL</option>
+    <!-- Add more options if needed -->
+  </select>
+
+  <label for="value">Value:</label>
+  <input id="value" type="text" [(ngModel)]="value" name="value" required />
+
+  <button type="submit">Generate</button>
+</form>

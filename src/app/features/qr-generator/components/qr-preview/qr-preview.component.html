@@ -1,0 +1,21 @@
+<div class="preview-container" *ngIf="qrEntry">
+    <h2>QR Code Preview</h2>
+
+    <div class="qr-wrapper">
+        <qrcode [qrdata]="qrEntry.result" [width]="300" [errorCorrectionLevel]="'M'"></qrcode>
+    </div>
+
+    <div class="details">
+        <p><strong>Type:</strong> {{ qrEntry.type }}</p>
+        <p><strong>Value:</strong> {{ qrEntry.value }}</p>
+        <p><strong>Generated On:</strong> {{ qrEntry.createdAt }}</p>
+    </div>
+
+    <button (click)="downloadQRCode()">Download QR Code</button>
+    <a routerLink="/" class="back-button">← Back</a>
+</div>
+
+<div *ngIf="!qrEntry">
+    <p>QR Code not found.</p>
+    <a routerLink="/" class="back-button">← Back</a>
+</div>
