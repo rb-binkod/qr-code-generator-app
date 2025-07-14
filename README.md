@@ -1,27 +1,110 @@
-# QrCodeGeneratorApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.17.
+# Angular QR Code Generator App
 
-## Development server
+This project is a well-structured **Angular 17** application for generating, managing, and previewing QR codes. It leverages Angular Material for a polished UI, local storage for history, and includes advanced features like QR downloading, duplicate validation, and real-time filtering.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+---
 
-## Code scaffolding
+## 🧱 Project Structure
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+```
+src/app/
+│
+├── core/                          # Reusable global services (e.g., storage)
+├── shared/                        # Shared components like dialogs
+├── features/
+│   └── qr-generator/
+│       ├── components/            # Form, preview components
+│       ├── models/                # QrEntry model
+│       ├── pages/                 # Route-level pages (form, preview)
+│       ├── services/              # Local storage service for QR history
+│       └── qr-generator.component.ts  # Main dashboard view
+│
+└── app.routes.ts                  # Application routing
+```
 
-## Build
+---
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## ✅ Prerequisites
 
-## Running unit tests
+- Node.js (v18+)
+- Angular CLI (v17)
+- Angular Material (`ng add @angular/material`)
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+---
 
-## Running end-to-end tests
+## 🚀 How to Run the App
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+### 📦 Install Dependencies
 
-## Further help
+```bash
+npm install
+```
 
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+### ▶️ Start the Dev Server
+
+```bash
+ng serve
+```
+
+Visit: [http://localhost:4200](http://localhost:4200)
+
+---
+
+## 🔧 Key Features
+
+- ✅ Generate QR codes for: **text, URL, email, phone, SMS**
+- ✅ **Local Storage caching** of all generated codes
+- ✅ **Prevent duplicate** (type + value) QR entries
+- ✅ **Search/filter** QR list by type or value
+- ✅ **Material table** with columns: Type, Value, Date, Action
+- ✅ **Preview full QR** in a dedicated route (`/preview/:id`)
+- ✅ **Download QR** as PNG from both form and list
+- ✅ **Snackbar notifications** for success and validation
+- ✅ **Confirmation dialog** before deletion
+- ✅ **Fixed footer** with credit text: "Designed By Ravi Bhushan."
+
+---
+
+## 💡 Design Decisions
+
+- **Standalone Components** (Angular 17 best practice)
+- **Angular Material** used for layout, forms, tables, dialogs
+- **Router-based navigation** between `/`, `/generate`, and `/preview/:id`
+- **LocalStorage** used for persistent history (with optional image data)
+- **Separation of concerns**: services, models, UI are modularized
+
+---
+
+## 🔐 Business Rules
+
+- ❌ Cannot generate duplicate QR codes with same type + value
+- ✅ QR image is also saved as base64 in history
+- ✅ All form fields are required
+
+---
+
+## 📸 Example QR Entry Stored
+
+```json
+{
+  "id": "1699970939993",
+  "type": "url",
+  "value": "https://example.com",
+  "result": "https://example.com",
+  "createdAt": "2024-07-14T10:12:30.000Z",
+  "image": "data:image/png;base64,..."
+}
+```
+
+---
+
+## 🧑‍💻 Author
+
+Developed by **Ravi Bhushan** — Angular QR Code Generator Project.
+
+---
+
+## 📜 License
+
+Free to use for learning, demonstration, and portfolio purposes.
