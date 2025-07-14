@@ -4,4 +4,5 @@ export interface QrEntry {
   value: string;
   result: string;
   createdAt: string;
+  image?: string;
 }

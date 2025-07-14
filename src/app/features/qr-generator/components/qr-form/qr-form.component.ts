@@ -8,7 +8,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatButtonModule } from '@angular/material/button';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 
 @Component({
   selector: 'app-qr-form',
@@ -32,12 +32,10 @@ export class QrFormComponent {
   constructor(
     private qrStorage: QrStorageService,
     private snackBar: MatSnackBar,
-    private router: Router
+    private router: Router, protected location: Location
   ) { }
 
   onSubmit() {
-    const formatted = this.formatValue(this.type, this.value);
-
     const isDuplicate = this.qrStorage
       .getAll()
       .some(entry => entry.type === this.type && entry.value === this.value);
@@ -46,20 +44,26 @@ export class QrFormComponent {
       this.snackBar.open('Duplicate QR entry not allowed!', 'Close', { duration: 3000 });
       return;
     }
+    setTimeout(() => {
+      const canvas: any = document.querySelector('canvas');
+      const base64Img = canvas?.toDataURL('image/png');
+      const formatted = this.formatValue(this.type, this.value);
 
-    const entry: QrEntry = {
-      id: Date.now().toString(),
-      type: this.type,
-      value: this.value,
-      result: formatted,
-      createdAt: new Date().toISOString()
-    };
+      const entry: QrEntry = {
+        id: Date.now().toString(),
+        type: this.type,
+        value: this.value,
+        result: formatted,
+        createdAt: new Date().toISOString(),
+        image: base64Img || ''
+      };
 
-    this.qrStorage.add(entry);
-    this.snackBar.open('QR Code Generated Successfully', 'Close', { duration: 2000 });
+      this.qrStorage.add(entry);
+      this.snackBar.open('QR Code Generated Successfully', 'Close', { duration: 2000 });
 
-    // redirect to list
-    this.router.navigate(['/']);
+      // redirect to list
+      this.router.navigate(['/']);
+    }, 100);
   }
 
   formatValue(type: string, value: string): string {

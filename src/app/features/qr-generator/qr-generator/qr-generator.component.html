@@ -1,13 +1,22 @@
 <div style="max-width: 900px; margin: 40px auto;">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
         <h2>QR Code History</h2>
         <button mat-raised-button color="primary" [routerLink]="['/generate']">
             + Generate QR
         </button>
     </div>
 
-    <table mat-table [dataSource]="qrList" class="qr-table"
-        style="width: 100%; border: 1px solid #ccc; margin-top: 20px;">
+    <mat-form-field appearance="outline" style="width: 100%; margin-bottom: 2px;">
+        <mat-label>Search QR Codes</mat-label>
+        <input matInput [(ngModel)]="searchTerm" placeholder="Type or value..." />
+        <button mat-icon-button matSuffix *ngIf="searchTerm" (click)="searchTerm=''">
+            <mat-icon>close</mat-icon>
+        </button>
+        <mat-icon matPrefix>search</mat-icon>
+    </mat-form-field>
+
+    <table mat-table [dataSource]="filteredQrList" class="qr-table"
+        style="width: 100%; border: 1px solid #ccc; margin-top: 2px;">
 
         <!-- Header and Column Definitions -->
         <ng-container matColumnDef="type">
@@ -29,7 +38,8 @@
             <th mat-header-cell *matHeaderCellDef>Action</th>
             <td mat-cell *matCellDef="let el">
                 <button mat-button color="accent" [routerLink]="['/preview', el.id]">Preview</button>
-                <button mat-button color="warn" (click)="delete(el.id)">Delete</button>
+                <!-- <button mat-button color="accent" (click)="downloadQr(el.result)">Download</button> -->
+                <button mat-button color="warn" (click)="confirmDelete(el.id)">Delete</button>
             </td>
         </ng-container>
 
@@ -38,7 +48,7 @@
         <tr mat-row *matRowDef="let row; columns: ['type', 'value', 'createdAt', 'action']"></tr>
     </table>
 
-    <p *ngIf="qrList.length === 0" style="text-align: center; margin-top: 20px;">
-        No QR codes generated yet.
+    <p *ngIf="filteredQrList.length === 0" style="text-align: center; margin-top: 20px;">
+        No QR codes found.
     </p>
 </div>
