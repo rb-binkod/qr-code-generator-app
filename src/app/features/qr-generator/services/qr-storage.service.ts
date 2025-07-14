@@ -18,4 +18,10 @@ export class QrStorageService {
     getById(id: string): QrEntry | undefined {
         return this.getAll().find(e => e.id === id);
     }
+
+    delete(id: string): void {
+        const updated = this.getAll().filter(qr => qr.id !== id);
+        localStorage.setItem(this.key, JSON.stringify(updated));
+    }
+
 }

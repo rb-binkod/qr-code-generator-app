@@ -1,19 +1,44 @@
-<div class="container">
-    <h2>QR Code Generator</h2>
+<div style="max-width: 900px; margin: 40px auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center;">
+        <h2>QR Code History</h2>
+        <button mat-raised-button color="primary" [routerLink]="['/generate']">
+            + Generate QR
+        </button>
+    </div>
 
-    <button (click)="toggleForm()">
-        {{ showForm ? 'Hide Form' : 'Generate QR' }}
-    </button>
+    <table mat-table [dataSource]="qrList" class="qr-table"
+        style="width: 100%; border: 1px solid #ccc; margin-top: 20px;">
 
-    <app-qr-form *ngIf="showForm" (qrGenerated)="onQrGenerated($event)"></app-qr-form>
+        <!-- Header and Column Definitions -->
+        <ng-container matColumnDef="type">
+            <th mat-header-cell *matHeaderCellDef>QR Type</th>
+            <td mat-cell *matCellDef="let el">{{ el.type }}</td>
+        </ng-container>
 
-    <h3>Generated QR Codes</h3>
-    <ul *ngIf="qrList.length > 0">
-        <li *ngFor="let item of qrList">
-            <span><strong>{{ item.type.toUpperCase() }}:</strong> {{ item.value }}</span>
-            <a [routerLink]="['/preview', item.id]" title="Preview QR">🔍</a>
-        </li>
-    </ul>
+        <ng-container matColumnDef="value">
+            <th mat-header-cell *matHeaderCellDef>QR Value</th>
+            <td mat-cell *matCellDef="let el">{{ el.value }}</td>
+        </ng-container>
 
-    <p *ngIf="qrList.length === 0">No QR codes generated yet.</p>
+        <ng-container matColumnDef="createdAt">
+            <th mat-header-cell *matHeaderCellDef>Created At</th>
+            <td mat-cell *matCellDef="let el">{{ el.createdAt | date:'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="action">
+            <th mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let el">
+                <button mat-button color="accent" [routerLink]="['/preview', el.id]">Preview</button>
+                <button mat-button color="warn" (click)="delete(el.id)">Delete</button>
+            </td>
+        </ng-container>
+
+        <!-- Rows -->
+        <tr mat-header-row *matHeaderRowDef="['type', 'value', 'createdAt', 'action']"></tr>
+        <tr mat-row *matRowDef="let row; columns: ['type', 'value', 'createdAt', 'action']"></tr>
+    </table>
+
+    <p *ngIf="qrList.length === 0" style="text-align: center; margin-top: 20px;">
+        No QR codes generated yet.
+    </p>
 </div>
